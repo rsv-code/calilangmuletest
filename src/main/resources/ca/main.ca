@@ -1,0 +1,74 @@
+include sys;
+include http;
+
+/**
+ * Class name can be anything except for 'main'. Also make 
+ * sure to name it something other than sys, env, or the 
+ * names of other loaded classes.
+ */
+class test {
+
+	/**
+	 * Main function is the entry point to the application and 
+	 * should take no arguments.
+	 * 
+	 * The special global object env is available which contains 
+	 * the following items.
+	 * - payload: a map with payload information.
+	 * - variables: a map with the current variables.
+	 * - attributes: a map with the attributes.
+	 * - p(''): a function that is used to get config properties. 
+	 * 		You must supply the property name and the value is 
+	 * 		returned. p('my.property') 
+	 * - loadResource(''): a function that will load a resource 
+	 *		file from src/main/resources directory.
+	 */
+	public main() {
+		log.info("Executing test.main() function ...");
+	
+		// Create a map with a variety of results.
+		ret = {
+			payload: env.payload,
+			variables: env.variables,
+			attributes: env.attributes,
+			systemInfo: this.getSysInfo(),
+			user: json.parse(env.loadResource("json/user.json")),
+			license: this.getGplLicense()
+		};
+		return ret;
+	}
+	
+	/**
+	 * Gets the system information and formats it into a 
+	 * map.
+	 */
+	private getSysInfo() {
+		return {
+			assembly: sys.getAssembly(),
+			assemblyPath: sys.getAssemblyPath(),
+			currentPath: sys.getCurrentPath(),
+			homePath: sys.getHomePath(),
+			userName: sys.getUserName(),
+			osArch: sys.getOsArch(),
+			osName: sys.getOsName(),
+			osVersion: sys.getOsVersion(),
+			javaVersion: sys.getJavaVersion(),
+			javaVendor: sys.getJavaVendor(),
+			javaVendorUrl: sys.getJavaVendorUrl(),
+			javaClassPath: sys.getJavaClassPath(),
+			fileSeparator: sys.getFileSeparator(),
+			lineSeparator: sys.getLineSeparator(),
+			caliVersion: sys.getCaliVersion(),
+			javaHome: sys.getJavaHome()
+		};
+	}
+	
+	/**
+	 * Makes a HTTP GET request to get the text GPL 
+	 * file.
+	 */
+	private getGplLicense() {
+		req = new http();
+		return req.get("https://www.gnu.org/licenses/lgpl-3.0.txt");
+	}
+}

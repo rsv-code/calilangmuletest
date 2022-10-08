@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:cali-lang-mule="http://www.mulesoft.org/schema/mule/cali-lang-mule"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/cali-lang-mule http://www.mulesoft.org/schema/mule/cali-lang-mule/current/mule-cali-lang-mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="b6997179-a5fb-445b-9711-3e9c68476f97" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="calilangmuletest_listener" doc:id="a7a9fcf6-0143-4223-8231-a9f496315923">
+		<http:listener doc:name="Listener" doc:id="fcfb1f3e-1b34-45a9-be7b-e498f5402e1e" config-ref="HTTP_Listener_config" path="/*" />
+		<flow-ref doc:name="calilangmuletestFlow" doc:id="c8d9b448-6f63-4e3f-ab7a-c32b6e217fb2" name="calilangmuletestFlow" />
+	</flow>
+	<flow name="calilangmuletestFlow" doc:id="39d9501a-ec2a-4a92-9dc9-17879cd28ebe" >
+		<cali-lang-mule:cali-lang-transform doc:name="Cali lang transform" doc:id="443753c8-6bac-4ad3-ab0a-70bf840c92f2" scriptFileName="ca/main.ca" logClass="io.github.rsv-code.calilangtest"/>
+	</flow>
+</mule>
